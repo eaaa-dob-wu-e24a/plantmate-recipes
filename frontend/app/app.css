@@ -20,6 +20,7 @@ body {
 
 :root {
   --radius: 0.6rem;
+  --primary-green: #103b28;
 }
 
 @theme inline {
