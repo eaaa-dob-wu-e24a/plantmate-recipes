@@ -3,11 +3,22 @@ import { Schema, model, type InferSchemaType } from "mongoose";
 // Define the schema for the "users" collection in MongoDB
 const userSchema = new Schema(
   {
-    title: { type: String, required: true },
-    username: { type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
-    passwordHash: { type: String, required: true, select: false },
-    imageUrl: { type: String, required: true },
+    username: {
+      type: String,
+      required: [true, "Username is required"],
+      unique: true,
+    },
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
+    },
+    passwordHash: {
+      type: String,
+      required: [true, "Password hash is required"],
+      select: false,
+    },
+    imageUrl: { type: String, required: [true, "Image URL is required"] },
     favoriteRecipes: [
       {
         type: Schema.Types.ObjectId,

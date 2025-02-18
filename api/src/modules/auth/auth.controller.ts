@@ -8,12 +8,12 @@ export const authController = {
       const { email, password } = req.body;
       const user = await User.findOne({ email });
       if (!user) {
-        res.status(401).json({ message: "Invalid email or password" });
+        res.status(401).json({ message: "Invalid email" });
         return;
       }
       const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
       if (!isPasswordValid) {
-        res.status(401).json({ message: "Invalid email or password" });
+        res.status(401).json({ message: "Invalid password" });
         return;
       }
       res.status(200).json({ message: "Login successful" });
