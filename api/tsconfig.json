@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ESNext", // Specifies the JavaScript version to output. "ESNext" ensures compatibility with the latest JS features.
+    "module": "NodeNext", // Configures how modules are handled. "NodeNext" supports ESModules in Node.js.
+    "moduleResolution": "NodeNext", // Determines how modules are resolved. "NodeNext" aligns with ESModule resolution.
+    "outDir": "dist", // Outputs compiled files to the "dist" directory.
+    "rootDir": "src", // Specifies the root folder for TypeScript source files.
+    "strict": true, // Enables all strict type-checking options for better code safety.
+    "allowSyntheticDefaultImports": true, // Allows default imports from modules without a default export.
+    "skipLibCheck": true, // Skips type checking for library files, improving compile times.
+    "esModuleInterop": true // Ensures compatibility between CommonJS and ESModule imports.
+  },
+  "include": ["src"] // Includes only files in the "src" directory for compilation.
+}
