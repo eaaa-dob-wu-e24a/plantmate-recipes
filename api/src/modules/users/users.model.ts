@@ -21,13 +21,15 @@ const userSchema = new Schema(
       flattenObjectIds: true,
       getters: true,
     },
-  },
+  }
 );
 
+// Define the type for the user schema
 export type UserType = InferSchemaType<typeof userSchema> & {
   _id: string;
 };
 
+// Create the User model used to interact with the "users" collection
 const User = model<UserType>("User", userSchema);
 
 export default User;

@@ -20,6 +20,8 @@ import { router as RecipeRoutes } from "./modules/recipes/recipes.routes.js";
 server.use("/recipes", RecipeRoutes);
 import { router as UserRoutes } from "./modules/users/users.routes.js";
 server.use("/users", UserRoutes);
+import { router as AuthRoutes } from "./modules/auth/auth.route.js";
+server.use("/auth", AuthRoutes);
 
 server.get("/", (req, res) => {
   res.json({ message: "Hello, World!" });
