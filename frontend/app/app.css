@@ -21,6 +21,9 @@ body {
 :root {
   --radius: 0.6rem;
   --primary-green: #103b28;
+  --primary-white: #F7F4ED;
+  --grey-color: #E9E9EB;
+  --black-color: #000000;
 }
 
 @theme inline {
