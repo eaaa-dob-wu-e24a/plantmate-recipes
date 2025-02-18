@@ -8,7 +8,7 @@ export const loader = async () => {
   return null;
 };
 
-
+// Placeholder for message interface til chatbotten. 
 interface Message {
   text: string;
   sender: "bot" | "user";
@@ -31,7 +31,7 @@ const Chatbot: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-[var(--primary-green)] max-w-[375px]">
+    <div className="flex justify-center items-center h-screen bg-[var(--primary-green)]">
      
       <div className="flex flex-col h-[80vh] w-full max-w-[350px] bg-[var(--primary-white)] shadow-lg border border-gray-300 rounded-2xl">
         
