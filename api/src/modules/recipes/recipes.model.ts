@@ -34,7 +34,7 @@ const recipeSchema = new Schema(
 
 // Infer TypeScript type for the schema
 export type RecipeType = InferSchemaType<typeof recipeSchema> & {
-  id: string;
+  _id: string;
 };
 
 // This model provides an interface to interact with the "recipes" collection in MongoDB
