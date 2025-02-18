@@ -6,9 +6,13 @@ export const authController = {
   login: async (req: Request, res: Response): Promise<void> => {
     try {
       const { email, password } = req.body;
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email }).select("+passwordHash");
       if (!user) {
         res.status(401).json({ message: "Invalid email" });
+        return;
+      }
+      if (!user.passwordHash) {
+        res.status(401).json({ message: "No password found" });
         return;
       }
       const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
@@ -33,7 +37,7 @@ export const authController = {
       });
     } catch (error) {
       console.error("Error creating user:", error);
-      res.status(500).json({ message: "Error creating user" });
+      res.status(500).json({ message: error });
     }
   },
 };
