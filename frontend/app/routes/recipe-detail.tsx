@@ -1,4 +1,5 @@
 import { Card, CardContent } from "../components/ui/card";
+
 import {
   Tabs,
   TabsContent,
@@ -6,6 +7,23 @@ import {
   TabsTrigger,
 } from "../components/ui/tabs";
 import { Bookmark } from "lucide-react";
+import type { Route } from "./+types/recipe-detail";
+
+const API_URL = import.meta.env.API_URL;
+
+export async function loader({ params }: Route.LoaderArgs) {
+  const { id } = params;
+  if (!id) throw new Response("Missing recipe ID", { status: 400 });
+
+  try {
+    const recipe = await fetch(`${API_URL}/api/recipes/${id}`);
+    if (!recipe.ok) throw new Error("Recipe not found");
+
+    return Response.json({ recipe }); // Return the post and user data
+  } catch (error) {
+    throw new Response("Recipe not found", { status: 404 });
+  }
+}
 
 interface Recipe {
   id: string;
@@ -44,6 +62,7 @@ const dummyRecipe: Recipe = {
 };
 
 const RecipeDetails = () => {
+
   return (
     <div className="flex justify-center items-center h-screen bg-[var(--primary-green)]">
       <div className="flex flex-col h-[80vh] w-full max-w-[350px] bg-[var(--primary-white)] shadow-lg border border-gray-300 rounded-2xl">
@@ -59,7 +78,7 @@ const RecipeDetails = () => {
             </h1>
             <Bookmark className="text-green-900" />
           </div>
-            <div className="flex flex-row justify-between w-full text-gray-600 text-sm">
+          <div className="flex flex-row justify-between w-full text-gray-600 text-sm">
             <div className="flex flex-col items-center">
               <span className="font-bold">Total time:</span>
               <span>{dummyRecipe.totalTime}</span>
@@ -72,7 +91,7 @@ const RecipeDetails = () => {
               <span className="font-bold">Cook time:</span>
               <span>{dummyRecipe.cookTime}</span>
             </div>
-            </div>
+          </div>
         </div>
 
         <Tabs defaultValue="ingredients" className="mt-0 p-2">
