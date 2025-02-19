@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
-import { Home, Bookmark, User } from "lucide-react";
 
 export const loader = async () => {
   return null;
@@ -38,13 +37,15 @@ const Chatbot: React.FC = () => {
             key={index}
             className={`flex ${
               msg.sender === "user" ? "justify-end" : "justify-start"
-            }`}>
+            }`}
+          >
             <Card
               className={`max-w-[75%] p-3 rounded-xl shadow-sm ${
                 msg.sender === "user"
                   ? "bg-[var(--primary-green)] text-[var(--primary-white)] rounded-br-none"
                   : "bg-[var(--grey-color)] text-[var(--black-color)] rounded-bl-none"
-              }`}>
+              }`}
+            >
               <CardContent className="p-0">{msg.text}</CardContent>
             </Card>
           </div>
@@ -65,7 +66,8 @@ const Chatbot: React.FC = () => {
         />
         <Button
           className="bg-[var(--primary-green)] text-[var(--primary-white)] rounded-xl px-4 py-2 text-sm"
-          onClick={handleSend}>
+          onClick={handleSend}
+        >
           Send
         </Button>
       </div>
