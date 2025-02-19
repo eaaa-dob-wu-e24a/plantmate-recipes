@@ -23,7 +23,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 const RecipeDetails = ({ loaderData } : Route.ComponentProps ) => {
   const {recipe} = loaderData;
   return (
-      <div className="flex flex-col bg-[var(--primary-white)]">
+      <div className="flex flex-col h-full bg-[var(--primary-white)] overflow-y-auto">
         <img
           src={recipe.imageUrl}
           alt={recipe.title}
