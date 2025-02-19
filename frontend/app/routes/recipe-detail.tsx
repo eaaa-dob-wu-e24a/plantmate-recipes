@@ -51,8 +51,8 @@ const RecipeDetails = () => {
         alt={dummyRecipe.title}
         className="w-full rounded-lg shadow-md mt-2 h-60 object-cover"
       />
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold mt-4 text-green-900">
+      <div className="flex justify-between mt-4 items-center">
+        <h1 className="text-2xl font-bold text-green-950">
           {dummyRecipe.title}
         </h1>
         <Bookmark className="text-green-900" />
@@ -69,13 +69,13 @@ const RecipeDetails = () => {
         </TabsList>
 
         <TabsContent value="ingredients">
-          <div className="flex items-center justify-end gap-2 text-green-900">
+          {/* <div className="flex items-center justify-end gap-2 text-green-900">
             <span>Ingredients for</span>
             <Minus />
             <span>4</span>
             <Plus />
             <span>servings</span>
-          </div>
+          </div> */}
           <Card>
             <CardContent>
               {dummyRecipe.ingredients.map((ingredient, index) => (
