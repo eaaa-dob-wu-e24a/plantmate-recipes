@@ -15,6 +15,8 @@ import {
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { SlidersHorizontal, X } from "lucide-react";
+import { Link } from "react-router"; // Import Link
+
 
 export async function loader() {
   const response = await fetch(`${process.env.API_URL}/recipes/`);
@@ -230,19 +232,18 @@ export default function RecipesPage({
       <section className="grid grid-cols-2 gap-4 px-4">
         {filteredRecipes.length ? (
           filteredRecipes.map(({ _id, title, description }) => (
-            <Card
+            <Link to={`/recipes/${_id}`} key={_id}>
+            <Card 
               key={_id}
-              className="hover:shadow-lg transition-shadow duration-300"
+              className="hover:shadow-lg transition-shadow duration-300 h-full mt-1"
             >
               <CardHeader>
-                <CardTitle className="text-lg text-[var(--primary-green)]">
+                <CardTitle className="text-md text-[var(--primary-green)]">
                   {title}
                 </CardTitle>
-                <CardDescription className="text-[var(--primary-green)]">
-                  {description}
-                </CardDescription>
               </CardHeader>
             </Card>
+            </Link>
           ))
         ) : (
           <p className="text-[var(--primary-green)] col-span-full text-center">
