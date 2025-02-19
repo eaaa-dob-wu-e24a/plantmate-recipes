@@ -32,7 +32,7 @@ const Chatbot: React.FC = () => {
 
   return (
     <div className="flex flex-col justify-between h-full">
-      <div className="flex flex-col gap-3 p-4">
+      <div className="flex flex-col gap-3 p-4 overflow-y-auto scrollbar">
         {messages.map((msg, index) => (
           <div
             key={index}
@@ -51,7 +51,7 @@ const Chatbot: React.FC = () => {
         ))}
       </div>
 
-      <div className="flex items-center gap-2 p-4 bg-[var(--primary-white)]">
+      <div className="flex relative fixed bottom-0 items-center gap-2 p-4 bg-[var(--primary-white)]">
         <Input
           className="flex-1 bg-[#E6E2D8] p-3 rounded-xl border-none focus:ring-0 text-sm"
           value={input}

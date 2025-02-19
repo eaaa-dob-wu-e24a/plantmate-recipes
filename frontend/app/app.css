@@ -21,8 +21,8 @@ body {
 :root {
   --radius: 0.6rem;
   --primary-green: #103b28;
-  --primary-white: #F7F4ED;
-  --grey-color: #E9E9EB;
+  --primary-white: #f7f4ed;
+  --grey-color: #e9e9eb;
   --black-color: #000000;
 }
 
@@ -31,4 +31,17 @@ body {
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: grey;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--grey-color);
 }

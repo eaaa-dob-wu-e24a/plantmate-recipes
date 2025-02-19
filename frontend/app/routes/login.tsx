@@ -29,7 +29,7 @@ export async function action({ request }: Route.ActionArgs) {
 
 export default function Login() {
   return (
-    <div className="flex justify-center flex-col items-center w-full h-screen">
+    <div className="flex justify-center flex-col items-center w-full h-screen p-4">
       <div>
         <h1 className="text-2xl font-bold text-[var(--primary-green)] mt-10">
           Log in
