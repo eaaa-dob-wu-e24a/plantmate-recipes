@@ -1,4 +1,6 @@
 import Recipe, { RecipeType } from "./recipes.model.js";
+import User from "../users/users.model.js";
+import { ObjectId } from "mongodb";
 import { generateRecipeFromAI } from "./recipes.ai.service.js";
 
 export const recipeService = {

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { recipeService } from "./recipes.service.js";
+import { userService } from "../users/users.service.js";
 
 export const recipeController = {
   getAllRecipes: async (req: Request, res: Response): Promise<void> => {
@@ -52,6 +53,24 @@ export const recipeController = {
     } catch (error: any) {
       console.error("Controller error generating recipe:", error);
       res.status(500).json({ message: error.message });
+    }
+  },
+  addFavoriteRecipe: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { userId } = req.params;
+      const recipeData = req.body;
+
+      const newRecipe = await recipeService.createRecipe(recipeData);
+
+      await userService.addFavoriteRecipe(userId, newRecipe._id);
+
+      res.status(201).json({
+        message: "Favorite recipe added successfully",
+        recipeId: newRecipe._id,
+      });
+    } catch (error) {
+      console.error("Controller error adding favorite recipe:", error);
+      res.status(500).json({ message: "Error adding favorite recipe" });
     }
   },
 };

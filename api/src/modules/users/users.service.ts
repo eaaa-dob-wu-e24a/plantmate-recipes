@@ -1,4 +1,5 @@
 import User, { UserType } from "./users.model.js";
+import { ObjectId } from "mongodb";
 
 export const userService = {
   getAllUsers: async (): Promise<UserType[]> => {
@@ -18,6 +19,21 @@ export const userService = {
     } catch (error) {
       console.error("Error creating user:", error);
       throw new Error("Error creating user");
+    }
+  },
+  addFavoriteRecipe: async (
+    userId: string,
+    recipeId: string,
+  ): Promise<void> => {
+    try {
+      await User.findByIdAndUpdate(
+        userId,
+        { $addToSet: { favoriteRecipes: recipeId } },
+        { new: true },
+      );
+    } catch (error) {
+      console.error("Error adding favorite recipe:", error);
+      throw error;
     }
   },
 };
