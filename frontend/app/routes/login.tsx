@@ -1,8 +1,31 @@
-import { Form } from "react-router";
+import { Form, redirect } from "react-router";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
+import type { Route } from "./+types/login";
+
+// action funtion to handle form submission and call the login mutation
+export async function action({ request }: Route.ActionArgs) {
+  let formData = Object.fromEntries(await request.formData());
+  try {
+    const response = await fetch(process.env.API_URL + "/auth/login", {
+      method: "POST",
+      body: JSON.stringify(formData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("try: " + response.statusText);
+    }
+
+    return redirect("/");
+  } catch (error) {
+    console.error("Error during login:", error);
+  }
+}
 
 export default function Login() {
   return (
@@ -12,13 +35,15 @@ export default function Login() {
           Log in
         </h1>
       </div>
-      <Form className="w-full h-full max-w-sm flex flex-col gap-4 justify-around">
+      <Form
+        method="post"
+        action="/login"
+        className="w-full h-full max-w-sm flex flex-col gap-4 justify-around">
         <div className="flex flex-col gap-4">
           <div>
             <Label
               className="text-[var(--primary-green)] text-md font-bold"
-              htmlFor="email"
-            >
+              htmlFor="email">
               Email
             </Label>
             <Input
@@ -26,13 +51,13 @@ export default function Login() {
               id="email"
               type="email"
               placeholder="Enter your email"
+              name="email"
             />
           </div>
           <div>
             <Label
               className="text-[var(--primary-green)] text-md font-bold"
-              htmlFor="password"
-            >
+              htmlFor="password">
               Password
             </Label>
             <Input
@@ -40,6 +65,7 @@ export default function Login() {
               id="password"
               type="password"
               placeholder="* * * * *"
+              name="password"
             />
           </div>
           <div className="flex justify-between items-center">
@@ -54,7 +80,7 @@ export default function Login() {
             </span>
           </div>
         </div>
-        <Button className="py-6" variant="default">
+        <Button type="submit" className="py-6" variant="default">
           Login
         </Button>
       </Form>
