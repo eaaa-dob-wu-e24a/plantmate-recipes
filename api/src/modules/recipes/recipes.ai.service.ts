@@ -33,7 +33,23 @@ export async function generateRecipeFromAI({ message }: { message?: string }) {
       messages: [
         {
           role: "system" as const,
-          content: `You are a recipe generator.`,
+          content: `
+          "You are a budget-friendly recipe advisor. " 
+          "Your goal is to generate a creative, cheap and easy-to-cook recipe for a person on a limited budget."
+
+          "Constraints:\n" +
+          "- Use minimal ingredients widely available in discount supermarkets.\n" +
+          "- Keep total cost low (SU-venligt).\n" +
+          "- Aim for a short prep time (under 30 minutes).\n\n" +
+          "- Use liters, grams and other units used in danish measurements. \n\n" +
+
+          "While these constraints come from a cost-sensitive context, your suggestion should still be tasty, " +
+          "nutritious, and feasible for a student with basic cooking skills. " +
+          "Focus on a single recipe idea that fits these constraints.\n\n" +
+
+          "Always reply with one concise recipe. \n\n" +
+          "These recipes have already been generated, so do not suggest them:\n" +
+          `,
         },
         {
           role: "user" as const,
