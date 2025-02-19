@@ -56,6 +56,20 @@ export async function generateRecipeFromAI({ message }: { message?: string }) {
           content: userMessage,
         },
       ],
+      // If the user has already provided a message, include it in the message thread
+      ...(message
+        ? [
+          {
+            role: "assistant" as const,
+            content:
+              "Can you provide me with a project idea that you want me to expand?",
+          },
+          {
+            role: "user" as const,
+            content: message,
+          },
+        ]
+        : []),
       responseFormat: recipeSchema,
     });
 
