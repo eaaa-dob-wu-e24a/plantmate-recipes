@@ -16,8 +16,8 @@ server.use(cors()); // Enable CORS for all routes
 // // ========== Routes ========== //
 
 // Root route
-import { router as RecipeRoutes } from "./modules/recipes/recipes.routes.js";
-server.use("/recipes", RecipeRoutes);
+import { router as RecipeRoute } from "./modules/recipes/recipes.route.js";
+server.use("/recipes", RecipeRoute);
 import { router as UserRoutes } from "./modules/users/users.routes.js";
 server.use("/users", UserRoutes);
 import { router as AuthRoutes } from "./modules/auth/auth.route.js";
