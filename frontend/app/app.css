@@ -21,6 +21,7 @@ body {
 :root {
   --radius: 0.6rem;
   --primary-green: #103b28;
+  --primary-green-30: hwb(153 6% 76% / 0.30);
   --primary-white: #f7f4ed;
   --grey-color: #e9e9eb;
   --black-color: #000000;
