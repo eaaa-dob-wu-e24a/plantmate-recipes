@@ -5,7 +5,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "../components/ui/tabs";
-import { Bookmark, Minus, Plus } from "lucide-react";
+import { Bookmark } from "lucide-react";
 
 interface Recipe {
   id: string;
