@@ -14,6 +14,19 @@ export const recipeController = {
       res.status(500).json({ message: "Error fetching recipes" });
     }
   },
+  getRecipeById: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const recipe = await Recipe.findById(req.params.id);
+      if (!recipe) {
+        res.status(404).json({ message: "Recipe not found" });
+        return;
+      }
+      res.status(200).json(recipe);
+    } catch (error) {
+      console.error("Error fetching recipe:", error);
+      res.status(500).json({ message: "Error fetching recipe" });
+    }
+  },
   createRecipe: async (req: Request, res: Response): Promise<void> => {
     try {
       const newRecipe: RecipeType = await Recipe.create(req.body);
