@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node --watch server.js"
+    "dev": "tsx watch --env-file=.env src/server.js",
+    "build": "tsc",
+    "start": "node --env-file=.env --watch dist/server.js"
   },
   "keywords": [],
   "author": "",
@@ -12,11 +14,19 @@
   "description": "",
   "dependencies": {
     "@mistralai/mistralai": "^1.5.0",
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "mongodb": "^6.13.0",
     "mongoose": "^8.10.1",
     "node": "^23.8.0",
     "typescript": "^5.7.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.4",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2"
   }
 }
