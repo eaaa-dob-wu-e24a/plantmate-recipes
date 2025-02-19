@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Recipe, { RecipeType } from "./recipes.model.js";
+import { generateRecipeFromAI } from "./recipes.ai.service.js";
 
 export const recipeController = {
   // Get all recipes
@@ -37,6 +38,20 @@ export const recipeController = {
     } catch (error) {
       console.error("Error creating recipe:", error);
       res.status(500).json({ message: "Error creating recipe" });
+    }
+  },
+  generateRecipe: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { prompt } = req.body;
+
+      if (!prompt) {
+        res.status(400).json({ error: "Prompt is required" });
+      }
+      const aiResponse = await generateRecipeFromAI({ message: prompt });
+      res.status(200).json({ aiResponse });
+    } catch (error) {
+      console.error("Error generating recipe:", error);
+      res.status(500).json({ error: "Failed to generate recipe" });
     }
   },
 };
