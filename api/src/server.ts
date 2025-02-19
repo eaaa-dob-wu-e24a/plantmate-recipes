@@ -18,10 +18,10 @@ server.use(cors()); // Enable CORS for all routes
 // Root route
 import { router as RecipeRoute } from "./modules/recipes/recipes.route.js";
 server.use("/recipes", RecipeRoute);
-import { router as UserRoutes } from "./modules/users/users.routes.js";
-server.use("/users", UserRoutes);
-import { router as AuthRoutes } from "./modules/auth/auth.route.js";
-server.use("/auth", AuthRoutes);
+import { router as UserRoute } from "./modules/users/users.route.js";
+server.use("/users", UserRoute);
+import { router as AuthRoute } from "./modules/auth/auth.route.js";
+server.use("/auth", AuthRoute);
 
 server.get("/", (req, res) => {
   res.json({ message: "Hello, World!" });
