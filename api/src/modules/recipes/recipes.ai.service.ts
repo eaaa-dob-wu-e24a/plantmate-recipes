@@ -1,5 +1,4 @@
 import mistral from "../../config/mistral.server.js";
-import Recipe from "./recipes.model.js";
 import { z } from "zod";
 
 // Define Zod schema for recipe validation

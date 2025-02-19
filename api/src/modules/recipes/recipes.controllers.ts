@@ -35,7 +35,7 @@ export const recipeController = {
         res.status(400).json({ error: "Prompt is required" });
       }
       const aiResponse = await generateRecipeFromAI({ message: prompt });
-      res.status(200).json({ aiResponse, prompt });
+      res.status(200).json({ aiResponse });
     } catch (error) {
       console.error("Error generating recipe:", error);
       res.status(500).json({ error: "Failed to generate recipe" });
