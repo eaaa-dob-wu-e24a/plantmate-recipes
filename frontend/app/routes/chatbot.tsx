@@ -13,12 +13,14 @@ export const loader = async () => {
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
   console.log("Form Data:", formData);
-  if (formData) {
+  const prompt = formData.get("prompt");
+  console.log("Prompt:", prompt);
+  if (prompt) {
     try {
       console.log("trying to fetch");
       const response = await fetch(process.env.API_URL + "/recipes/generate", {
         method: "POST",
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ prompt: prompt }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -30,15 +32,18 @@ export async function action({ request }: Route.ActionArgs) {
       console.error("Error:", error);
       return { error: "Failed to fetch response" };
     }
-  } else {
+  } else if (formData.get("intent") === "favorite") {
     try {
-      const response = await fetch(process.env.API_URL + "/recipes/favorite", {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        process.env.API_URL + "/recipes/favorite/userid",
+        {
+          method: "POST",
+          body: JSON.stringify(formData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await response.json();
       console.log("Data:", data);
       return data;
@@ -60,6 +65,7 @@ export default function Chat({}: Route.ComponentProps) {
     fetcher.data &&
     !messages.some((msg) => msg.content === fetcher.data?.aiResponse)
   ) {
+    console.log("Appending AI response to messages");
     setMessages((prev) => [
       ...prev,
       { role: "bot", content: fetcher.data.aiResponse },
@@ -73,8 +79,7 @@ export default function Chat({}: Route.ComponentProps) {
         {messages.map((msg, index) => (
           <Card
             key={index}
-            className={msg.role === "bot" ? "bg-gray-200" : "bg-green-200"}
-          >
+            className={msg.role === "bot" ? "bg-gray-200" : "bg-green-200"}>
             <CardContent className="p-3">
               {msg.role === "user" ? (
                 <p>{msg.content}</p>
@@ -131,7 +136,17 @@ export default function Chat({}: Route.ComponentProps) {
                   </div>
                   <div className="w-full flex justify-end">
                     <fetcher.Form method="post" className="h-6">
-                      <button name="intent" value="favorite" type="submit">
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          fetcher.submit(msg.content, {
+                            method: "POST",
+                            encType: "application/json",
+                          });
+                        }}
+                        name="intent"
+                        value="favorite"
+                        type="submit">
                         <Heart className="w-6 h-6 text-red-500" />
                       </button>
                     </fetcher.Form>
@@ -149,7 +164,6 @@ export default function Chat({}: Route.ComponentProps) {
           method="post"
           className="flex w-full gap-2"
           onSubmit={(e) => {
-            e.preventDefault();
             const formData = new FormData(e.currentTarget);
             const userMessage = formData.get("prompt") as string;
             if (userMessage.trim()) {
@@ -157,10 +171,8 @@ export default function Chat({}: Route.ComponentProps) {
                 ...prev,
                 { role: "user", content: userMessage },
               ]);
-              fetcher.submit(formData, { method: "post" });
             }
-          }}
-        >
+          }}>
           <Input
             className="flex-1 bg-[#E6E2D8] p-3 rounded-xl border-none focus:ring-0 text-sm"
             type="text"
@@ -171,8 +183,7 @@ export default function Chat({}: Route.ComponentProps) {
             value="generate"
             type="submit"
             name="intent"
-            className="bg-[var(--primary-green)] text-[var(--primary-white)] rounded-xl px-4 py-2 text-sm"
-          >
+            className="bg-[var(--primary-green)] text-[var(--primary-white)] rounded-xl px-4 py-2 text-sm">
             Send
           </Button>
         </fetcher.Form>
