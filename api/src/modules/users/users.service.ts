@@ -11,6 +11,18 @@ export const userService = {
       throw new Error("Error fetching users");
     }
   },
+  getUserById: async (userId: string): Promise<UserType> => {
+    try {
+      const user: UserType | null = await User.findById(userId);
+      if (!user) {
+        throw new Error("User not found");
+      }
+      return user;
+    } catch (error) {
+      console.error("Error fetching user by ID:", error);
+      throw new Error("Error fetching user by ID");
+    }
+  },
   createUser: async (userData: Partial<UserType>): Promise<UserType> => {
     try {
       const newUser: UserType = await User.create(userData);
