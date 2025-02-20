@@ -12,6 +12,16 @@ export const userController = {
     }
   },
 
+  getUserById: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const user = await userService.getUserById(req.params.id);
+      res.status(200).json({ user });
+    } catch (error: any) {
+      console.error("Controller error fetching user by ID:", error);
+      res.status(500).json({ message: error.message });
+    }
+  },
+
   createUser: async (req: Request, res: Response): Promise<void> => {
     try {
       const newUser = await userService.createUser(req.body);
