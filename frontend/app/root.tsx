@@ -38,7 +38,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="flex justify-center items-center h-screen bg-[var(--primary-green)]">
           <div className="h-[80vh] w-full flex flex-col max-w-[350px] bg-[var(--primary-white)] shadow-lg border border-gray-300 rounded-2xl overflow-hidden">
             <Logo />
-            <div className="flex-grow max-h-[calc(100%-7rem)]">{children}</div>
+            <div className="flex-grow max-h-[calc(100%-10rem)]">{children}</div>
             <Footer />
           </div>
         </div>
