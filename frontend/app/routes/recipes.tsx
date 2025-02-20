@@ -1,4 +1,4 @@
-import { type RecipeType } from "../../../api/src/modules/recipes/recipes.model";
+import { type RecipeType } from "../types/Recipe";
 import { useState, useMemo } from "react";
 import {
   Popover,
@@ -16,7 +16,6 @@ import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { SlidersHorizontal, X } from "lucide-react";
 import { Link } from "react-router";
-
 
 export async function loader() {
   const response = await fetch(`${process.env.API_URL}/recipes/`);
@@ -233,16 +232,16 @@ export default function RecipesPage({
         {filteredRecipes.length ? (
           filteredRecipes.map(({ _id, title, description }) => (
             <Link to={`/recipes/${_id}`} key={_id}>
-            <Card 
-              key={_id}
-              className="hover:shadow-lg transition-shadow duration-300 h-full mt-1"
-            >
-              <CardHeader>
-                <CardTitle className="text-md text-[var(--primary-green)]">
-                  {title}
-                </CardTitle>
-              </CardHeader>
-            </Card>
+              <Card
+                key={_id}
+                className="hover:shadow-lg transition-shadow duration-300 h-full mt-1"
+              >
+                <CardHeader>
+                  <CardTitle className="text-md text-[var(--primary-green)]">
+                    {title}
+                  </CardTitle>
+                </CardHeader>
+              </Card>
             </Link>
           ))
         ) : (
