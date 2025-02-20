@@ -11,7 +11,13 @@ const PORT: number = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
 // Configure middleware
 server.use(express.json()); // to parse JSON bodies
-server.use(cors()); // Enable CORS for all routes
+server.use(
+  cors({
+    origin: "*", // This allows all origins
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], // Allowed methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+  }),
+);
 
 // // ========== Routes ========== //
 

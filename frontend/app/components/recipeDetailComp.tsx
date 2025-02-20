@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Bookmark, ArrowLeft } from "lucide-react";
 import { Card, CardContent } from "./ui/card";
-import { type RecipeType } from "../../../api/src/modules/recipes/recipes.model";
+import { type RecipeType } from "../types/Recipe";
 import { useLocation } from "react-router";
 
 export default function RecipeDetailComp({ recipe }: { recipe: RecipeType }) {
