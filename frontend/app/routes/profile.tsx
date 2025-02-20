@@ -1,5 +1,5 @@
 import type { Route } from "./+types/profile"; // or your custom types
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router";
 import {
   Card,
   CardContent,
