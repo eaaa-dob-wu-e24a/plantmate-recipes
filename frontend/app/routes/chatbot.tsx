@@ -4,7 +4,8 @@ import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
 import type { Route } from "./+types/chatbot";
 import { useFetcher, Form } from "react-router";
-import { Heart } from "lucide-react";
+import RecipeDetailComp from "~/components/recipeDetailComp";
+import RecipeCard from "~/components/recipeCard";
 
 export const loader = async () => {
   null;
@@ -59,6 +60,7 @@ export default function Chat({}: Route.ComponentProps) {
   const [messages, setMessages] = useState<{ role: string; content: any }[]>(
     []
   );
+  const [selectedRecipe, setSelectedRecipe] = useState<any>(null);
 
   // Append AI response when fetcher.data updates
   if (
@@ -73,90 +75,40 @@ export default function Chat({}: Route.ComponentProps) {
   }
 
   return (
-    <div className="flex flex-col justify-between h-full">
+    <div className="flex flex-col relative justify-between h-full">
       {/* Chat Messages Display */}
       <div className="flex flex-col gap-3 p-4 overflow-y-auto">
         {messages.map((msg, index) => (
           <Card
             key={index}
-            className={msg.role === "bot" ? "bg-gray-200" : "bg-green-200"}>
-            <CardContent className="p-3">
+            className={msg.role === "bot" ? "bg-gray-200" : "bg-green-200"}
+            onClick={() =>
+              msg.role === "bot" && setSelectedRecipe(msg.content)
+            }>
+            <CardContent className="p-0">
               {msg.role === "user" ? (
-                <p>{msg.content}</p>
+                <p className="m-3">{msg.content}</p>
               ) : (
-                <div>
-                  <h2 className="text-lg font-semibold">{msg.content.title}</h2>
-                  <p className="text-sm">{msg.content.description}</p>
-                  {msg.content.imageUrl && (
-                    <img
-                      src={msg.content.imageUrl}
-                      alt={msg.content.title}
-                      className="w-full h-auto rounded-md my-2"
-                    />
-                  )}
-                  <h3 className="font-semibold mt-2">Ingredients:</h3>
-                  <ul className="list-disc pl-5">
-                    {msg.content.ingredients?.map((ingredient, i) => (
-                      <li key={i}>
-                        {ingredient.name} - {ingredient.quantity}{" "}
-                        {ingredient.unit}
-                      </li>
-                    ))}
-                  </ul>
-                  <h3 className="font-semibold mt-2">Instructions:</h3>
-                  <ol className="list-decimal pl-5">
-                    {msg.content.instructions?.map((step, i) => (
-                      <li key={i}>{step}</li>
-                    ))}
-                  </ol>
-                  <div className="mt-3 text-sm flex flex-col items-center gap-1 border-t pt-3">
-                    <div className="flex gap-3">
-                      <div>
-                        Prep:
-                        <span className="font-bold">
-                          {" "}
-                          {msg.content.prepTime}{" "}
-                        </span>
-                        mins ⏱
-                      </div>
-                      |
-                      <div>
-                        Cook:
-                        <span className="font-bold">
-                          {" "}
-                          {msg.content.cookTime}{" "}
-                        </span>
-                        mins 🍲
-                      </div>
-                    </div>
-                    <div>
-                      🍽 Servings:{" "}
-                      <span className="font-bold">{msg.content.servings}</span>
-                    </div>
-                  </div>
-                  <div className="w-full flex justify-end">
-                    <fetcher.Form method="post" className="h-6">
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          fetcher.submit(msg.content, {
-                            method: "POST",
-                            encType: "application/json",
-                          });
-                        }}
-                        name="intent"
-                        value="favorite"
-                        type="submit">
-                        <Heart className="w-6 h-6 text-red-500" />
-                      </button>
-                    </fetcher.Form>
-                  </div>
-                </div>
+                <RecipeCard {...msg.content} />
               )}
             </CardContent>
           </Card>
         ))}
       </div>
+
+      {/* Modal to display recipe details */}
+      {selectedRecipe && (
+        <div className="absolute inset-0 bg-[var(--primary-white)] z-200 flex justify-center items-center">
+          <div className="pt-10 rounded-lg max-w-11/12 mx-auto max-h-full overflow-y-auto relative">
+            <button
+              className="absolute top-2 right-2 text-2xl"
+              onClick={() => setSelectedRecipe(null)}>
+              &times;
+            </button>
+            <RecipeDetailComp recipe={selectedRecipe} />
+          </div>
+        </div>
+      )}
 
       {/* Chat Input */}
       <div className="flex relative bottom-0 items-center gap-2 p-4 bg-[var(--primary-white)]">
