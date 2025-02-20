@@ -11,17 +11,17 @@ import type { Route } from "./+types/recipe-detail";
 import { type RecipeType } from "../../../api/src/modules/recipes/recipes.model";
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const response = await fetch(
-    `${process.env.API_URL}/recipes/${params.id}`
-  );
-  const recipe: RecipeType = await response.json();
+  const response = await fetch(`${process.env.API_URL}/recipes/${params.id}`);
+  const data = await response.json();
+  const recipe: RecipeType = await data.recipe;
 
-  console.log(recipe);
+  console.log("Full recipe data:", recipe);
+
   return { recipe };
 }
 
-const RecipeDetails = ({ loaderData } : Route.ComponentProps ) => {
-  const {recipe} = loaderData;
+const RecipeDetails = ({ loaderData }: Route.ComponentProps) => {
+  const { recipe } = loaderData;
   return (
     <div className="flex flex-col h-full bg-[var(--primary-white)] overflow-y-auto">
       <div className="relative">
