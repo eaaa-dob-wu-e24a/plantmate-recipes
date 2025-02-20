@@ -15,7 +15,7 @@ import {
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { SlidersHorizontal, X } from "lucide-react";
-import { Link } from "react-router"; // Import Link
+import { Link } from "react-router";
 
 
 export async function loader() {
