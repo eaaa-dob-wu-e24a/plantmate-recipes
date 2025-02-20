@@ -25,10 +25,6 @@ export async function action({ request }: Route.ActionArgs) {
     const data = await response.json();
     const userId = data.userId;
 
-    const cookieHeader = request.headers.get("Cookie");
-    const cookie = await userPrefs.parse(cookieHeader);
-    console.log("cookie:", cookie.userId);
-
     // Set the cookie and redirect
     return redirect("/", {
       headers: {
