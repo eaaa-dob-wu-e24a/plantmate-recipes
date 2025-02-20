@@ -11,7 +11,6 @@ export const userService = {
       throw new Error("Error fetching users");
     }
   },
-
   createUser: async (userData: Partial<UserType>): Promise<UserType> => {
     try {
       const newUser: UserType = await User.create(userData);
@@ -33,6 +32,41 @@ export const userService = {
       );
     } catch (error) {
       console.error("Error adding favorite recipe:", error);
+      throw error;
+    }
+  },
+  removeFavoriteRecipe: async (
+    userId: string,
+    recipeId: string,
+  ): Promise<void> => {
+    try {
+      const updatedResult = await User.updateOne(
+        { _id: userId },
+        { $pull: { favoriteRecipes: new ObjectId(recipeId) } },
+      );
+
+      if (updatedResult.modifiedCount === 0) {
+        throw new Error("Failed to remove recipe from favorites");
+      }
+    } catch (error) {
+      console.error("Error removing favorite recipe:", error);
+      throw error;
+    }
+  },
+  checkUserHasFavorite: async (
+    userId: string,
+    recipeId: string,
+  ): Promise<boolean> => {
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      // Assuming favoriteRecipes is an array of recipe IDs
+      return user.favoriteRecipes.some((id) => id.toString() === recipeId);
+    } catch (error) {
+      console.error("Error checking user favorite:", error);
       throw error;
     }
   },

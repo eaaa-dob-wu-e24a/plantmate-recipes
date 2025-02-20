@@ -73,4 +73,33 @@ export const recipeController = {
       res.status(500).json({ message: "Error adding favorite recipe" });
     }
   },
+  deleteFavoriteRecipe: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { userId, recipeId } = req.params;
+
+      const userHasFavorite = await userService.checkUserHasFavorite(
+        userId,
+        recipeId,
+      );
+
+      if (!userHasFavorite) {
+        res.status(404).json({
+          message: "Recipe not found in user's favorites",
+        });
+        return;
+      }
+
+      await userService.removeFavoriteRecipe(userId, recipeId);
+
+      const deletedRecipe = await recipeService.deleteRecipe(recipeId);
+
+      res.status(200).json({
+        message: "Favorite recipe deleted successfully",
+        recipeId: deletedRecipe._id || recipeId,
+      });
+    } catch (error) {
+      console.error("Controller error removing favorite recipe:", error);
+      res.status(500).json({ message: "Error removing favorite recipe" });
+    }
+  },
 };

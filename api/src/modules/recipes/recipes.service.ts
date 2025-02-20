@@ -42,6 +42,17 @@ export const recipeService = {
     }
   },
 
+  // Delete recipe
+  deleteRecipe: async (recipeId: string): Promise<any> => {
+    try {
+      const deletedRecipe = await Recipe.deleteOne({ _id: recipeId });
+      return deletedRecipe;
+    } catch (error) {
+      console.error("Error deleting recipe:", error);
+      throw error;
+    }
+  },
+
   // Generate a recipe using AI based on the provided prompt
   generateRecipe: async (prompt: string): Promise<any> => {
     try {
