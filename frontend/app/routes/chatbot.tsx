@@ -6,6 +6,7 @@ import type { Route } from "./+types/chatbot";
 import { useFetcher, Form } from "react-router";
 import RecipeDetailComp from "~/components/recipeDetailComp";
 import RecipeCard from "~/components/recipeCard";
+import SkeletonCard from "~/components/skeletonCard";
 
 export const loader = async () => {
   null;
@@ -62,37 +63,45 @@ export default function Chat({}: Route.ComponentProps) {
   );
   const [selectedRecipe, setSelectedRecipe] = useState<any>(null);
 
-  // Append AI response when fetcher.data updates
-  if (
-    fetcher.data &&
-    !messages.some((msg) => msg.content === fetcher.data?.aiResponse)
-  ) {
-    console.log("Appending AI response to messages");
-    setMessages((prev) => [
-      ...prev,
-      { role: "bot", content: fetcher.data.aiResponse },
-    ]);
-  }
-
+  // Append AI response when fetcher.data updates 
+if (
+  fetcher.data &&
+  !messages.some((msg) => msg.content === fetcher.data?.aiResponse)
+) {
+  // remove the bot-loading message
+  setMessages((prev) => prev.filter((m) => m.role !== "bot-loading"));
+  // then add the real "bot" message
+  setMessages((prev) => [
+    ...prev,
+    { role: "bot", content: fetcher.data.aiResponse },
+  ]);
+}
   return (
     <div className="flex flex-col relative justify-between h-full">
       {/* Chat Messages Display */}
       <div className="flex flex-col gap-3 p-4 overflow-y-auto">
         {messages.map((msg, index) => (
-          <Card
+            <Card
             key={index}
-            className={msg.role === "bot" ? "bg-gray-200" : "bg-green-200"}
-            onClick={() =>
-              msg.role === "bot" && setSelectedRecipe(msg.content)
-            }>
+            className={
+              msg.role === "bot"
+              ? "bg-gray-200"
+              : msg.role === "bot-loading"
+              ? "bg-transparent border-none shadow-none"
+              : "bg-green-200"
+            }
+            onClick={() => msg.role === "bot" && setSelectedRecipe(msg.content)}
+            >
             <CardContent className="p-0">
               {msg.role === "user" ? (
-                <p className="m-3">{msg.content}</p>
+              <p className="m-3">{msg.content}</p>
+              ) : msg.role === "bot-loading" ? (
+              <SkeletonCard />
               ) : (
-                <RecipeCard {...msg.content} />
+              <RecipeCard {...msg.content} />
               )}
             </CardContent>
-          </Card>
+            </Card>
         ))}
       </div>
 
@@ -102,7 +111,8 @@ export default function Chat({}: Route.ComponentProps) {
           <div className="pt-10 rounded-lg max-w-11/12 mx-auto max-h-full overflow-y-auto relative">
             <button
               className="absolute top-2 right-2 text-2xl"
-              onClick={() => setSelectedRecipe(null)}>
+              onClick={() => setSelectedRecipe(null)}
+            >
               &times;
             </button>
             <RecipeDetailComp recipe={selectedRecipe} />
@@ -123,8 +133,13 @@ export default function Chat({}: Route.ComponentProps) {
                 ...prev,
                 { role: "user", content: userMessage },
               ]);
+              setMessages((prev) => [
+                ...prev,
+                { role: "bot-loading", content: null },
+              ]);
             }
-          }}>
+          }}
+        >
           <Input
             className="flex-1 bg-[#E6E2D8] p-3 rounded-xl border-none focus:ring-0 text-sm"
             type="text"
@@ -135,7 +150,8 @@ export default function Chat({}: Route.ComponentProps) {
             value="generate"
             type="submit"
             name="intent"
-            className="bg-[var(--primary-green)] text-[var(--primary-white)] rounded-xl px-4 py-2 text-sm">
+            className="bg-[var(--primary-green)] text-[var(--primary-white)] rounded-xl px-4 py-2 text-sm"
+          >
             Send
           </Button>
         </fetcher.Form>
