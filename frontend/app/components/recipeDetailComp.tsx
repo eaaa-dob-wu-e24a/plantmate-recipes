@@ -4,15 +4,11 @@ import { Card, CardContent } from "./ui/card";
 import { type RecipeType } from "../types/Recipe";
 import { useLocation } from "react-router";
 
-export default function RecipeDetailComp(
-  { recipe }: { recipe: RecipeType },
-  userId: string
-) {
-  console.log(userId);
+export default function RecipeDetailComp({ recipe }: { recipe: RecipeType }) {
   const location = useLocation();
   // path equal to / hide back button
   const showBackButton = location.pathname !== "/";
-  const handleBookmarkClick = async (userId: string) => {
+  const handleBookmarkClick = async () => {
     try {
       const response = await fetch(
         "http://localhost:3000/recipes/favorite/" + "67b4f6700909b81e6bfa1a46",
@@ -55,7 +51,7 @@ export default function RecipeDetailComp(
         <div className="flex flex-row justify-between w-full">
           <h1 className="text-xl font-bold text-green-950">{recipe.title}</h1>
           <Bookmark
-            onClick={() => handleBookmarkClick(userId)}
+            onClick={() => handleBookmarkClick()}
             className="text-green-900"
           />
         </div>

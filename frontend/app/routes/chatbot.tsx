@@ -6,14 +6,6 @@ import type { Route } from "./+types/chatbot";
 import { useFetcher, Form, useLoaderData } from "react-router";
 import RecipeDetailComp from "~/components/recipeDetailComp";
 import RecipeCard from "~/components/recipeCard";
-import { userPrefs } from "~/cookies.server";
-
-export async function loader({ request }: Route.LoaderArgs) {
-  const cookieHeader = request.headers.get("Cookie");
-  const cookie = await userPrefs.parse(cookieHeader);
-  const userId = cookie.userId;
-  return { userId };
-}
 
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
@@ -38,8 +30,6 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export default function Chat({}: Route.ComponentProps) {
-  const { userId } = useLoaderData();
-  console.log("User ID:", userId);
   const fetcher = useFetcher();
   const [messages, setMessages] = useState<{ role: string; content: any }[]>(
     []
@@ -89,7 +79,7 @@ export default function Chat({}: Route.ComponentProps) {
               onClick={() => setSelectedRecipe(null)}>
               &times;
             </button>
-            <RecipeDetailComp recipe={selectedRecipe} userId={userId} />
+            <RecipeDetailComp recipe={selectedRecipe} />
           </div>
         </div>
       )}
