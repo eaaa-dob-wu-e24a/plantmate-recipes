@@ -61,8 +61,9 @@ export default function Chat({}: Route.ComponentProps) {
     []
   );
   const [selectedRecipe, setSelectedRecipe] = useState<any>(null);
+  const [showIntro, setShowIntro] = useState(true); // ✅ Added intro screen
 
-  // Append AI response when fetcher.data updates
+  // ✅ Append AI response when fetcher.data updates (No changes here)
   if (
     fetcher.data &&
     !messages.some((msg) => msg.content === fetcher.data?.aiResponse)
@@ -76,33 +77,61 @@ export default function Chat({}: Route.ComponentProps) {
 
   return (
     <div className="flex flex-col relative justify-between h-full">
+      {/* ✅ Only Adding This: Intro Screen */}
+      {showIntro && (
+        <div
+          onClick={() => setShowIntro(false)}
+          className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[var(--primary-white)]"
+        >
+          <img src="/miso.svg" alt="Miso" className="h-40 w-auto" />
+          <p className="mt-4 text-[var(--black-color)] text-lg font-bold">
+            Welcome to Plant Mate!
+          </p>
+          <p className="text-[var(--black-color)] text-sm">
+            Tap anywhere to start chatting.
+          </p>
+        </div>
+      )}
+
       {/* Chat Messages Display */}
       <div className="flex flex-col gap-3 p-4 overflow-y-auto">
         {messages.map((msg, index) => (
-          <Card
+          <div
             key={index}
-            className={msg.role === "bot" ? "bg-gray-200" : "bg-green-200"}
-            onClick={() =>
-              msg.role === "bot" && setSelectedRecipe(msg.content)
-            }>
-            <CardContent className="p-0">
-              {msg.role === "user" ? (
-                <p className="m-3">{msg.content}</p>
-              ) : (
-                <RecipeCard {...msg.content} />
-              )}
-            </CardContent>
-          </Card>
+            className={
+              msg.role === "user" ? "flex justify-end" : "flex justify-start"
+            }
+          >
+            <Card
+              className={`w-64 ${
+                msg.role === "bot"
+                  ? "bg-gray-200 text-sm"
+                  : "bg-[var(--primary-green-30)] text-[var(--primary-green)] text-sm"
+              }`}
+              onClick={() =>
+                msg.role === "bot" && setSelectedRecipe(msg.content)
+              }
+            >
+              <CardContent className="p-0">
+                {msg.role === "user" ? (
+                  <p className="m-3">{msg.content}</p>
+                ) : (
+                  <RecipeCard {...msg.content} />
+                )}
+              </CardContent>
+            </Card>
+          </div>
         ))}
       </div>
 
       {/* Modal to display recipe details */}
       {selectedRecipe && (
-        <div className="absolute inset-0 bg-[var(--primary-white)] z-200 flex justify-center items-center">
+        <div className="absolute inset-0 bg-[var(--primary-white)] z-50 flex justify-center items-center">
           <div className="pt-10 rounded-lg max-w-11/12 mx-auto max-h-full overflow-y-auto relative">
             <button
               className="absolute top-2 right-2 text-2xl"
-              onClick={() => setSelectedRecipe(null)}>
+              onClick={() => setSelectedRecipe(null)}
+            >
               &times;
             </button>
             <RecipeDetailComp recipe={selectedRecipe} />
@@ -123,19 +152,23 @@ export default function Chat({}: Route.ComponentProps) {
                 ...prev,
                 { role: "user", content: userMessage },
               ]);
+              fetcher.submit(formData, { method: "post" });
             }
-          }}>
+          }}
+        >
           <Input
             className="flex-1 bg-[#E6E2D8] p-3 rounded-xl border-none focus:ring-0 text-sm"
             type="text"
             name="prompt"
-            placeholder="Message lil Miso Homie"
+            placeholder="Type a message for Miso..."
+            onFocus={() => setShowIntro(false)} // ✅ FIX: Hide intro on input click
           />
           <Button
             value="generate"
             type="submit"
             name="intent"
-            className="bg-[var(--primary-green)] text-[var(--primary-white)] rounded-xl px-4 py-2 text-sm">
+            className="bg-[var(--primary-green)] text-[var(--primary-white)] rounded-xl px-4 py-2 text-sm"
+          >
             Send
           </Button>
         </fetcher.Form>
