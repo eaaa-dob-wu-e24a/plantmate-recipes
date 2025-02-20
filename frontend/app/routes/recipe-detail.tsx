@@ -1,6 +1,6 @@
 import RecipeDetailComp from "../components/recipeDetailComp";
 import type { Route } from "./+types/recipe-detail";
-import { type RecipeType } from "../../../api/src/modules/recipes/recipes.model";
+import { type RecipeType } from "../types/Recipe";
 
 export async function loader({ params }: Route.LoaderArgs) {
   const response = await fetch(`${process.env.API_URL}/recipes/${params.id}`);

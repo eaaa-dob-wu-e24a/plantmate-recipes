@@ -25,10 +25,6 @@ export async function action({ request }: Route.ActionArgs) {
     const data = await response.json();
     const userId = data.userId;
 
-    const cookieHeader = request.headers.get("Cookie");
-    const cookie = await userPrefs.parse(cookieHeader);
-    console.log("cookie:", cookie.userId);
-
     // Set the cookie and redirect
     return redirect("/", {
       headers: {
@@ -46,14 +42,14 @@ export default function Login() {
   return (
     <div className="flex justify-center flex-col items-center w-full h-screen p-4">
       <div>
-        <h1 className="text-2xl font-bold text-[var(--primary-green)] mt-10">
+        <h1 className="text-2xl font-bold text-[var(--primary-green)] mt-5">
           Log in
         </h1>
       </div>
       <Form
         method="post"
         action="/login"
-        className="w-full h-full max-w-sm flex flex-col gap-4 justify-around"
+        className="w-full h-full max-w-sm flex flex-col gap-4"
       >
         <div className="flex flex-col gap-4">
           <div>
@@ -98,7 +94,7 @@ export default function Login() {
             </span>
           </div>
         </div>
-        <Button type="submit" className="py-6" variant="default">
+        <Button type="submit" className=" py-6" variant="default">
           Login
         </Button>
       </Form>
