@@ -4,6 +4,7 @@ import { Input } from "~/components/ui/input";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Label } from "~/components/ui/label";
 import type { Route } from "./+types/login";
+import { userPrefs } from "~/cookies.server";
 
 // action funtion to handle form submission and call the login mutation
 export async function action({ request }: Route.ActionArgs) {
@@ -21,9 +22,23 @@ export async function action({ request }: Route.ActionArgs) {
       throw new Error("try: " + response.statusText);
     }
 
-    return redirect("/");
+    const data = await response.json();
+    const userId = data.userId;
+
+    const cookieHeader = request.headers.get("Cookie");
+    const cookie = await userPrefs.parse(cookieHeader);
+    console.log("cookie:", cookie.userId);
+
+    // Set the cookie and redirect
+    return redirect("/", {
+      headers: {
+        "Set-Cookie": await userPrefs.serialize({ userId: userId }),
+      },
+    });
   } catch (error) {
     console.error("Error during login:", error);
+    // Handle the error appropriately, maybe return an error message to the user
+    return { error: "Login failed. Please try again." };
   }
 }
 
@@ -38,12 +53,14 @@ export default function Login() {
       <Form
         method="post"
         action="/login"
-        className="w-full h-full max-w-sm flex flex-col gap-4 justify-around">
+        className="w-full h-full max-w-sm flex flex-col gap-4 justify-around"
+      >
         <div className="flex flex-col gap-4">
           <div>
             <Label
               className="text-[var(--primary-green)] text-md font-bold"
-              htmlFor="email">
+              htmlFor="email"
+            >
               Email
             </Label>
             <Input
@@ -57,7 +74,8 @@ export default function Login() {
           <div>
             <Label
               className="text-[var(--primary-green)] text-md font-bold"
-              htmlFor="password">
+              htmlFor="password"
+            >
               Password
             </Label>
             <Input
