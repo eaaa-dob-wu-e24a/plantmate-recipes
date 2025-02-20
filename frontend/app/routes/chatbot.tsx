@@ -3,56 +3,30 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
 import type { Route } from "./+types/chatbot";
-import { useFetcher, Form } from "react-router";
+import { useFetcher, Form, useLoaderData } from "react-router";
 import RecipeDetailComp from "~/components/recipeDetailComp";
 import RecipeCard from "~/components/recipeCard";
 import SkeletonCard from "~/components/skeletonCard";
 
-export const loader = async () => {
-  null;
-};
-
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
-  console.log("Form Data:", formData);
   const prompt = formData.get("prompt");
   console.log("Prompt:", prompt);
-  if (prompt) {
-    try {
-      console.log("trying to fetch");
-      const response = await fetch(process.env.API_URL + "/recipes/generate", {
-        method: "POST",
-        body: JSON.stringify({ prompt: prompt }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
-      console.log("Data:", data);
-      return data;
-    } catch (error) {
-      console.error("Error:", error);
-      return { error: "Failed to fetch response" };
-    }
-  } else if (formData.get("intent") === "favorite") {
-    try {
-      const response = await fetch(
-        process.env.API_URL + "/recipes/favorite/userid",
-        {
-          method: "POST",
-          body: JSON.stringify(formData),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const data = await response.json();
-      console.log("Data:", data);
-      return data;
-    } catch (error) {
-      console.error("Error:", error);
-      return { error: "Failed to fetch response" };
-    }
+  try {
+    console.log("trying to fetch");
+    const response = await fetch(process.env.API_URL + "/recipes/generate", {
+      method: "POST",
+      body: JSON.stringify({ prompt: prompt }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    console.log("Data:", data);
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    return { error: "Failed to fetch response" };
   }
 }
 

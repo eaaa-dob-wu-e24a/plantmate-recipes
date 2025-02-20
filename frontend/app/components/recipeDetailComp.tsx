@@ -8,6 +8,29 @@ export default function RecipeDetailComp({ recipe }: { recipe: RecipeType }) {
   const location = useLocation();
   // path equal to / hide back button
   const showBackButton = location.pathname !== "/";
+  const handleBookmarkClick = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/recipes/favorite/" + "67b4f6700909b81e6bfa1a46",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(recipe),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      console.log("favorite added:", data);
+    } catch (error) {
+      console.error("Error adding bookmark:", error);
+    }
+  };
   return (
     <div className="flex flex-col h-full bg-[var(--primary-white)] overflow-y-auto">
       <div className="relative">
@@ -27,7 +50,10 @@ export default function RecipeDetailComp({ recipe }: { recipe: RecipeType }) {
       <div className="flex flex-col gap-4 justify-between items-center px-4 py-2">
         <div className="flex flex-row justify-between w-full">
           <h1 className="text-xl font-bold text-green-950">{recipe.title}</h1>
-          <Bookmark className="text-green-900" />
+          <Bookmark
+            onClick={() => handleBookmarkClick()}
+            className="text-green-900"
+          />
         </div>
         <p className="text-sm text-[var(--primary-green)]">
           {recipe.description}
