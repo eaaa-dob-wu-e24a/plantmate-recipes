@@ -7,5 +7,6 @@ export default [
   route("/login", "routes/login.tsx"),
   route("/recipes", "routes/recipes.tsx"),
   route("recipes/:id", "routes/recipe-detail.tsx"),
+  route("/profile", "routes/profile.tsx"),
 
 ] satisfies RouteConfig;

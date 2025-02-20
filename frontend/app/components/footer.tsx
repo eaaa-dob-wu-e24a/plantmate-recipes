@@ -34,13 +34,15 @@ export default function Footer() {
         />
       </Link>
 
+      <Link to="/profile">
       <User
         className={
-          isActive("/user")
+          isActive("/profile")
             ? "w-6 h-6 text-[var(--primary-green)]"
             : "w-6 h-6 text-[var(--primary-green-30)]"
         }
       />
+      </Link>
     </div>
   );
 }
