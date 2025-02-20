@@ -2,6 +2,26 @@ import { Bookmark } from "lucide-react";
 import type { RecipeType } from "../../../api/src/modules/recipes/recipes.model";
 
 export default function RecipeCard(content: RecipeType) {
+  const handleBookmarkClick = async () => {
+    try {
+      const response = await fetch("/recipe/favorite", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ recipe: content, userId: 1 }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      console.log("favorite added:", data);
+    } catch (error) {
+      console.error("Error adding bookmark:", error);
+    }
+  };
   return (
     <div>
       <div
@@ -18,7 +38,10 @@ export default function RecipeCard(content: RecipeType) {
         <h1 className="">{content.title}</h1>
         <div className="flex items-center">
           {" "}
-          <Bookmark className="w-6 h-6 text-[var(--primary-green)]" />
+          <Bookmark
+            onClick={handleBookmarkClick}
+            className="w-6 h-6 text-[var(--primary-green)]"
+          />
         </div>
       </div>
     </div>
