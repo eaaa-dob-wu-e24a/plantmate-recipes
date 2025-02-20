@@ -3,7 +3,7 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
 import type { Route } from "./+types/chatbot";
-import { useFetcher, Form } from "react-router";
+import { useFetcher, Form, useLoaderData } from "react-router";
 import RecipeDetailComp from "~/components/recipeDetailComp";
 import RecipeCard from "~/components/recipeCard";
 import { userPrefs } from "~/cookies.server";
@@ -38,6 +38,8 @@ export async function action({ request }: Route.ActionArgs) {
 }
 
 export default function Chat({}: Route.ComponentProps) {
+  const { userId } = useLoaderData();
+  console.log("User ID:", userId);
   const fetcher = useFetcher();
   const [messages, setMessages] = useState<{ role: string; content: any }[]>(
     []
@@ -87,7 +89,7 @@ export default function Chat({}: Route.ComponentProps) {
               onClick={() => setSelectedRecipe(null)}>
               &times;
             </button>
-            <RecipeDetailComp recipe={selectedRecipe} />
+            <RecipeDetailComp recipe={selectedRecipe} userId={userId} />
           </div>
         </div>
       )}

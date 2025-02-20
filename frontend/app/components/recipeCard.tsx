@@ -36,7 +36,7 @@ export default function RecipeCard(content: RecipeType) {
       </div>
       <div className="flex justify-between px-4 py-2">
         <h1 className="">{content.title}</h1>
-        <div className="flex items-center">
+        <div className="flex items-center z-50">
           {" "}
           <Bookmark
             onClick={handleBookmarkClick}
