@@ -10,10 +10,13 @@ export default function Footer() {
   }
 
   // A helper function to see if this link is "active"
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (...paths: string[]) => paths.includes(location.pathname);
+  const isRecipesPage =
+    location.pathname === "/recipes" ||
+    location.pathname.startsWith("/recipes/");
 
   return (
-    <div className="flex justify-around items-center py-3 border-[#E6E2D] bg-[var(--primary-white)]">
+    <div className="flex justify-around items-center py-3 border-t border-[#E6E2D] bg-[var(--primary-white)]">
       <Link to="/">
         <Home
           className={
@@ -27,7 +30,7 @@ export default function Footer() {
       <Link to="/recipes">
         <Bookmark
           className={
-            isActive("/recipes")
+            isRecipesPage
               ? "w-6 h-6 text-[var(--primary-green)]"
               : "w-6 h-6 text-[var(--primary-green-30)]"
           }
