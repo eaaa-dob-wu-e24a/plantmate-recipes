@@ -92,7 +92,7 @@ export default function RecipesPage({
 
   return (
     <div className="flex flex-col h-full bg-[var(--primary-white)] overflow-y-auto">
-      <div className="text-center mt-2 mb-2 font-bold text-xl text-[var(--primary-green)]">
+      <div className="text-center mt-2 mb-4 font-bold text-xl text-[var(--primary-green)]">
         Recipes
       </div>
 
